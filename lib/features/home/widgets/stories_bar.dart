@@ -1,41 +1,48 @@
 import 'package:flutter/material.dart';
-
-import '../data/users.dart';
+import '../data/users.dart'; // Assuming this imports your user data
 
 class Stories extends StatelessWidget {
-  const Stories({
-    super.key,
-  });
+  const Stories({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       scrollDirection: Axis.horizontal,
       children: [
-        StoryBackGround(
-          bottomText: "Your Story",
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.deepOrange.shade400,
-              image: const DecorationImage(
-                image: AssetImage('assets/0_me.jpeg'),
-                fit: BoxFit.cover,
-                opacity: .75,
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CameraScreen()),
+            );
+          },
+          child: StoryBackground(
+            bottomText: "Your Story",
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.deepOrange.shade400,
+                image: const DecorationImage(
+                  image: AssetImage('assets/0_me.jpeg'),
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black12,
+                    BlendMode.darken,
+                  ),
+                ),
               ),
-            ),
-            child: const Center(
-              child: Icon(
-                Icons.add_box_rounded,
-                color: Colors.white,
-                size: 30,
+              child: const Center(
+                child: Icon(
+                  Icons.add_box_rounded,
+                  color: Colors.white,
+                  size: 30,
+                ),
               ),
             ),
           ),
         ),
-        ...stories
-            .map(
-              (u) => StoryBackGround(
+        ...stories.map(
+              (u) => StoryBackground(
             bottomText: u.userName,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
@@ -45,19 +52,18 @@ class Stories extends StatelessWidget {
               ),
             ),
           ),
-        )
-            .toList()
+        ).toList(),
       ],
     );
   }
 }
 
-class StoryBackGround extends StatelessWidget {
-  const StoryBackGround({
-    super.key,
+class StoryBackground extends StatelessWidget {
+  const StoryBackground({
+    Key? key,
     required this.child,
     required this.bottomText,
-  });
+  }) : super(key: key);
 
   final Widget child;
   final String bottomText;
@@ -86,8 +92,24 @@ class StoryBackGround extends StatelessWidget {
           style: const TextStyle(
             fontSize: 10,
           ),
-        )
+        ),
       ],
+    );
+  }
+}
+
+class CameraScreen extends StatelessWidget {
+  const CameraScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Camera'),
+      ),
+      body: Center(
+        child: const Text('Camera Screen'),
+      ),
     );
   }
 }
